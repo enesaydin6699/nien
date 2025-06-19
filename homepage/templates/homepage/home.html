@@ -1,0 +1,624 @@
+{% load static %}
+{% extends 'homepage/base.html' %}
+
+{% block title %}NİEN - Ana Sayfa{% endblock %}
+
+{% block header_title %}NİEN{% endblock %}
+{% block header_subtitle %}{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Hero Section */
+    .hero-section {
+        background: linear-gradient(135deg, #222 0%, #00c3ff 100%);
+        color: white;
+        padding: 80px 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        opacity: 0.3;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .hero-title {
+        font-size: 3.5em;
+        margin-bottom: 20px;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        animation: fadeInUp 1s ease-out;
+    }
+
+    .hero-subtitle {
+        font-size: 1.3em;
+        margin-bottom: 30px;
+        opacity: 0.9;
+        animation: fadeInUp 1s ease-out 0.3s both;
+    }
+
+    .hero-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+        animation: fadeInUp 1s ease-out 0.6s both;
+    }
+
+    .hero-btn {
+        padding: 15px 30px;
+        border: 2px solid white;
+        border-radius: 50px;
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        background: transparent;
+    }
+
+    .hero-btn.primary {
+        background: white;
+        color: #222;
+    }
+
+    .hero-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .hero-btn.primary:hover {
+        background: #f0f0f0;
+    }
+
+    /* Animated Slider */
+    .slider-section {
+        padding: 60px 0;
+        background: #f8f9fa;
+    }
+
+    .slider-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        position: relative;
+    }
+
+    .slider {
+        display: flex;
+        overflow: hidden;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .slide {
+        min-width: 100%;
+        height: 400px;
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-align: center;
+        position: relative;
+    }
+
+    .slide::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.4);
+    }
+
+    .slide-content {
+        position: relative;
+        z-index: 2;
+        max-width: 600px;
+        padding: 20px;
+    }
+
+    .slide-title {
+        font-size: 2.5em;
+        margin-bottom: 15px;
+        font-weight: bold;
+    }
+
+    .slide-description {
+        font-size: 1.2em;
+        margin-bottom: 20px;
+    }
+
+    .slider-nav {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 10px;
+    }
+
+    .slider-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.5);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .slider-dot.active {
+        background: white;
+        transform: scale(1.2);
+    }
+
+    /* Services Section */
+    .services-section {
+        padding: 80px 0;
+        background: white;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 2.5em;
+        margin-bottom: 20px;
+        color: #222;
+    }
+
+    .section-subtitle {
+        text-align: center;
+        font-size: 1.2em;
+        color: #666;
+        margin-bottom: 60px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .service-card {
+        background: white;
+        border-radius: 15px;
+        padding: 40px 30px;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        border: 1px solid #f0f0f0;
+    }
+
+    .service-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    .service-icon {
+        font-size: 3em;
+        margin-bottom: 20px;
+        color: #00c3ff;
+    }
+
+    .service-title {
+        font-size: 1.5em;
+        margin-bottom: 15px;
+        color: #222;
+        font-weight: bold;
+    }
+
+    .service-description {
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    .service-link {
+        color: #00c3ff;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+
+    .service-link:hover {
+        color: #222;
+    }
+
+    /* Statistics Section */
+    .stats-section {
+        padding: 80px 0;
+        background: linear-gradient(135deg, #222 0%, #333 100%);
+        color: white;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 40px;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 3em;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #00c3ff;
+    }
+
+    .stat-label {
+        font-size: 1.1em;
+        opacity: 0.9;
+    }
+
+    /* Testimonials Section */
+    .testimonials-section {
+        padding: 80px 0;
+        background: #f8f9fa;
+    }
+
+    .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .testimonial-card {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        position: relative;
+    }
+
+    .testimonial-card::before {
+        content: '"';
+        position: absolute;
+        top: -10px;
+        left: 20px;
+        font-size: 4em;
+        color: #00c3ff;
+        font-family: serif;
+    }
+
+    .testimonial-text {
+        font-style: italic;
+        margin-bottom: 20px;
+        color: #444;
+        line-height: 1.6;
+    }
+
+    .testimonial-author {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .author-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: #00c3ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+    }
+
+    .author-info h4 {
+        margin: 0;
+        color: #222;
+        font-size: 1.1em;
+    }
+
+    .author-info p {
+        margin: 0;
+        color: #666;
+        font-size: 0.9em;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+        }
+        to {
+            transform: translateX(0);
+        }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5em;
+        }
+        
+        .hero-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .slide-title {
+            font-size: 2em;
+        }
+        
+        .services-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .testimonials-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-content">
+        <h1 class="hero-title">NİEN'e Hoş Geldiniz</h1>
+        <p class="hero-subtitle">Yenilikçi çözümler ve profesyonel hizmet anlayışıyla geleceği şekillendiriyoruz</p>
+        <div class="hero-buttons">
+            <a href="{% url 'hakkimizda' %}" class="hero-btn primary">Hakkımızda</a>
+            <a href="{% url 'iletisim' %}" class="hero-btn">İletişim</a>
+        </div>
+    </div>
+</section>
+
+<!-- Animated Slider -->
+<section class="slider-section">
+    <div class="slider-container">
+        <div class="slider" id="slider">
+            <div class="slide" style="background-image: url('https://via.placeholder.com/1200x400/222/00c3ff?text=Kaliteli+Hizmet')">
+                <div class="slide-content">
+                    <h2 class="slide-title">Kaliteli Hizmet</h2>
+                    <p class="slide-description">Müşterilerimize en yüksek kalitede hizmet sunuyoruz</p>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('https://via.placeholder.com/1200x400/00c3ff/222?text=Yenilikçi+Çözümler')">
+                <div class="slide-content">
+                    <h2 class="slide-title">Yenilikçi Çözümler</h2>
+                    <p class="slide-description">Modern teknolojilerle geleceğe hazır çözümler geliştiriyoruz</p>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('https://via.placeholder.com/1200x400/333/00c3ff?text=Profesyonel+Ekip')">
+                <div class="slide-content">
+                    <h2 class="slide-title">Profesyonel Ekip</h2>
+                    <p class="slide-description">Deneyimli ve uzman kadromuzla yanınızdayız</p>
+                </div>
+            </div>
+        </div>
+        <div class="slider-nav" id="slider-nav">
+            <div class="slider-dot active"></div>
+            <div class="slider-dot"></div>
+            <div class="slider-dot"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="services-section">
+    <h2 class="section-title">Hizmetlerimiz</h2>
+    <p class="section-subtitle">Size sunduğumuz profesyonel hizmetler</p>
+    
+    <div class="services-grid">
+        <div class="service-card">
+            <div class="service-icon">💼</div>
+            <h3 class="service-title">Danışmanlık</h3>
+            <p class="service-description">Uzman danışmanlık hizmetleri ile işinizi büyütün ve geliştirin.</p>
+            <a href="#" class="service-link">Detaylar →</a>
+        </div>
+        
+        <div class="service-card">
+            <div class="service-icon">🛠️</div>
+            <h3 class="service-title">Teknoloji</h3>
+            <p class="service-description">Modern teknoloji çözümleri ile iş süreçlerinizi optimize edin.</p>
+            <a href="#" class="service-link">Detaylar →</a>
+        </div>
+        
+        <div class="service-card">
+            <div class="service-icon">📈</div>
+            <h3 class="service-title">Strateji</h3>
+            <p class="service-description">Stratejik planlama ve büyüme danışmanlığı hizmetleri.</p>
+            <a href="#" class="service-link">Detaylar →</a>
+        </div>
+    </div>
+</section>
+
+<!-- Statistics Section -->
+<section class="stats-section">
+    <div class="stats-grid">
+        <div class="stat-item">
+            <div class="stat-number" data-target="150">0</div>
+            <div class="stat-label">Mutlu Müşteri</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" data-target="500">0</div>
+            <div class="stat-label">Tamamlanan Proje</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" data-target="10">0</div>
+            <div class="stat-label">Yıllık Deneyim</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" data-target="24">0</div>
+            <div class="stat-label">Uzman Ekip</div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials-section">
+    <h2 class="section-title">Müşteri Yorumları</h2>
+    <p class="section-subtitle">Müşterilerimizin bizim hakkımızda söyledikleri</p>
+    
+    <div class="testimonials-grid">
+        <div class="testimonial-card">
+            <p class="testimonial-text">NİEN ile çalışmak gerçekten harika bir deneyimdi. Profesyonel yaklaşımları ve kaliteli hizmetleri sayesinde projemiz başarıyla tamamlandı.</p>
+            <div class="testimonial-author">
+                <div class="author-avatar">A</div>
+                <div class="author-info">
+                    <h4>Ahmet Yılmaz</h4>
+                    <p>ABC Şirketi CEO</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="testimonial-card">
+            <p class="testimonial-text">Ekip çok deneyimli ve işlerini profesyonelce yapıyorlar. Kesinlikle tavsiye ederim.</p>
+            <div class="testimonial-author">
+                <div class="author-avatar">M</div>
+                <div class="author-info">
+                    <h4>Mehmet Demir</h4>
+                    <p>XYZ Ltd. Müdürü</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="testimonial-card">
+            <p class="testimonial-text">NİEN'in yenilikçi çözümleri sayesinde işimizi çok daha verimli hale getirdik. Teşekkürler!</p>
+            <div class="testimonial-author">
+                <div class="author-avatar">F</div>
+                <div class="author-info">
+                    <h4>Fatma Kaya</h4>
+                    <p>DEF Teknoloji</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Slider functionality
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.slider-dot');
+    const totalSlides = slides.length;
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.style.transform = `translateX(${(i - index) * 100}%)`;
+        });
+        
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === index);
+        });
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        showSlide(currentSlide);
+    }
+
+    // Initialize slider
+    showSlide(0);
+
+    // Auto-advance slides
+    setInterval(nextSlide, 5000);
+
+    // Dot navigation
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            currentSlide = index;
+            showSlide(currentSlide);
+        });
+    });
+
+    // Statistics counter animation
+    function animateCounter(element) {
+        const target = parseInt(element.getAttribute('data-target'));
+        const duration = 2000; // 2 seconds
+        const step = target / (duration / 16); // 60fps
+        let current = 0;
+        
+        const timer = setInterval(() => {
+            current += step;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            element.textContent = Math.floor(current);
+        }, 16);
+    }
+
+    // Intersection Observer for statistics
+    const observerOptions = {
+        threshold: 0.5,
+        rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const statNumbers = entry.target.querySelectorAll('.stat-number');
+                statNumbers.forEach(animateCounter);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Observe statistics section
+    const statsSection = document.querySelector('.stats-section');
+    if (statsSection) {
+        observer.observe(statsSection);
+    }
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+</script>
+{% endblock %} 
