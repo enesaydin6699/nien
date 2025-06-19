@@ -1,0 +1,196 @@
+{% extends 'homepage/base.html' %}
+
+{% block title %}NİEN - Ekibimiz{% endblock %}
+
+{% block header_title %}Ekibimiz{% endblock %}
+{% block header_subtitle %}Profesyonel kadromuz{% endblock %}
+
+{% block breadcrumb_items %}
+<span class="breadcrumb-separator">/</span>
+<span class="breadcrumb-item active">Ekibimiz</span>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .team-container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 30px;
+        margin-top: 30px;
+    }
+    .team-member {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+    .team-member:hover {
+        transform: translateY(-5px);
+    }
+    .member-image {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+    }
+    .member-info {
+        padding: 20px;
+        text-align: center;
+    }
+    .member-name {
+        font-size: 1.2em;
+        color: #222;
+        margin-bottom: 5px;
+    }
+    .member-title {
+        color: #666;
+        font-size: 0.9em;
+        margin-bottom: 15px;
+    }
+    .member-bio {
+        color: #444;
+        font-size: 0.95em;
+        line-height: 1.5;
+        margin-bottom: 15px;
+    }
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+    .social-links a {
+        color: #222;
+        text-decoration: none;
+        transition: color 0.3s ease;
+        font-size: 1.5em;
+    }
+    .social-links a:hover {
+        color: #00c3ff;
+    }
+    .department-title {
+        color: #222;
+        margin: 40px 0 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #00c3ff;
+        display: inline-block;
+    }
+    .contact-person {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+    .contact-person:hover {
+        transform: translateY(-5px);
+    }
+    .contact-person-image {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+    }
+    .contact-person-info {
+        padding: 20px;
+        text-align: center;
+    }
+    .contact-person h4 {
+        color: #222;
+        margin-bottom: 10px;
+        font-size: 1.1em;
+    }
+    .contact-person p {
+        margin: 8px 0;
+        color: #666;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    .contact-person i {
+        width: 20px;
+        color: #222;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="team-container">
+    <h2>Profesyonel Ekibimiz</h2>
+    
+    <h3 class="department-title">Yönetim Ekibi</h3>
+    <div class="team-grid">
+        <div class="contact-person">
+            <img src="https://via.placeholder.com/400x400" alt="Ahmet Yılmaz" class="contact-person-image">
+            <div class="contact-person-info">
+                <h4>Ahmet Yılmaz</h4>
+                <p><i>👤</i> Genel Müdür</p>
+                <p><i>📞</i> +90 (532) 123 45 67</p>
+                <p><i>✉️</i> ahmet@nien.com</p>
+                <p><i>📍</i> İstanbul Ofis</p>
+                <div class="social-links">
+                    <a href="https://wa.me/905321234567" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://instagram.com/ahmet_yilmaz" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://twitter.com/ahmet_yilmaz" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="https://linkedin.com/in/ahmet-yilmaz" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-person">
+            <img src="https://via.placeholder.com/400x400" alt="Ayşe Demir" class="contact-person-image">
+            <div class="contact-person-info">
+                <h4>Ayşe Demir</h4>
+                <p><i>👤</i> İletişim Sorumlusu</p>
+                <p><i>📞</i> +90 (533) 765 43 21</p>
+                <p><i>✉️</i> ayse@nien.com</p>
+                <p><i>📍</i> Ankara Ofis</p>
+                <div class="social-links">
+                    <a href="https://wa.me/905337654321" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://instagram.com/ayse_demir" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://twitter.com/ayse_demir" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="https://linkedin.com/in/ayse-demir" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="department-title">Geliştirme Ekibi</h3>
+    <div class="team-grid">
+        <div class="team-member">
+            <img src="https://via.placeholder.com/400x400" alt="Takım Üyesi 3" class="member-image">
+            <div class="member-info">
+                <h4 class="member-name">Ad Soyad</h4>
+                <div class="member-title">Senior Developer</div>
+                <p class="member-bio">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                    Sed do eiusmod tempor incididunt ut labore.
+                </p>
+                <div class="social-links">
+                    <a href="#"><i>📧</i></a>
+                    <a href="#"><i>💼</i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="team-member">
+            <img src="https://via.placeholder.com/400x400" alt="Takım Üyesi 4" class="member-image">
+            <div class="member-info">
+                <h4 class="member-name">Ad Soyad</h4>
+                <div class="member-title">UI/UX Designer</div>
+                <p class="member-bio">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                    Sed do eiusmod tempor incididunt ut labore.
+                </p>
+                <div class="social-links">
+                    <a href="#"><i>📧</i></a>
+                    <a href="#"><i>💼</i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,432 @@
+{% extends 'homepage/base.html' %}
+
+{% block title %}NİEN - İletişim{% endblock %}
+
+{% block header_title %}İletişim{% endblock %}
+{% block header_subtitle %}Bizimle iletişime geçin{% endblock %}
+
+{% block breadcrumb_items %}
+<span class="breadcrumb-separator">/</span>
+<span class="breadcrumb-item active">İletişim</span>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .contact-container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    .contact-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        position: relative;
+    }
+    .form-group label {
+        font-weight: bold;
+        color: #333;
+    }
+    .form-group input,
+    .form-group textarea {
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 1em;
+        transition: all 0.3s ease;
+        background: white;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #00c3ff;
+        box-shadow: 0 0 0 3px rgba(0, 195, 255, 0.1);
+    }
+    .form-group textarea {
+        min-height: 150px;
+        resize: vertical;
+    }
+    .form-group.error input,
+    .form-group.error textarea {
+        border-color: #e74c3c;
+        box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+    }
+    .form-group.success input,
+    .form-group.success textarea {
+        border-color: #27ae60;
+        box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+    }
+    .error-message {
+        color: #e74c3c;
+        font-size: 0.9em;
+        margin-top: 5px;
+        display: none;
+    }
+    .error-message.show {
+        display: block;
+        animation: shake 0.5s ease-in-out;
+    }
+    .success-message {
+        color: #27ae60;
+        font-size: 0.9em;
+        margin-top: 5px;
+        display: none;
+    }
+    .success-message.show {
+        display: block;
+    }
+    .submit-btn {
+        background: #222;
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1em;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .submit-btn:hover:not(:disabled) {
+        background: #00c3ff;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 195, 255, 0.3);
+    }
+    .submit-btn:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+    .submit-btn .loading {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .submit-btn.loading .loading {
+        display: block;
+    }
+    .submit-btn.loading .btn-text {
+        opacity: 0;
+    }
+    .form-success {
+        text-align: center;
+        padding: 40px 20px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        border: 2px solid #27ae60;
+        display: none;
+    }
+    .form-success.show {
+        display: block;
+        animation: fadeInUp 0.5s ease-out;
+    }
+    .success-icon {
+        font-size: 3em;
+        color: #27ae60;
+        margin-bottom: 20px;
+    }
+    .contact-info {
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #ddd;
+    }
+    .contact-info h3 {
+        margin-bottom: 25px;
+        color: #222;
+    }
+    .contact-persons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+    }
+    .contact-person {
+        background: #f8f8f8;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .contact-person h4 {
+        color: #222;
+        margin-bottom: 10px;
+        font-size: 1.1em;
+    }
+    .contact-person p {
+        margin: 8px 0;
+        color: #666;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .contact-person i {
+        width: 20px;
+        color: #222;
+    }
+    .social-links {
+        display: flex;
+        gap: 15px;
+        margin-top: 15px;
+        justify-content: center;
+    }
+    .social-links a {
+        color: #222;
+        text-decoration: none;
+        font-size: 1.5em;
+        transition: color 0.3s ease;
+    }
+    .social-links a:hover {
+        color: #00c3ff;
+    }
+    @media (max-width: 600px) {
+        .contact-persons {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    /* Animations */
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    .loading-spinner {
+        animation: spin 1s linear infinite;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="contact-container">
+    <h2>İletişim Formu</h2>
+    
+    <!-- Success Message -->
+    <div class="form-success" id="formSuccess">
+        <div class="success-icon">✓</div>
+        <h3>Mesajınız Başarıyla Gönderildi!</h3>
+        <p>En kısa sürede size geri dönüş yapacağız.</p>
+    </div>
+    
+    <!-- Contact Form -->
+    <form class="contact-form" id="contactForm">
+        <div class="form-group" id="nameGroup">
+            <label for="name">Ad Soyad *</label>
+            <input type="text" id="name" name="name" required>
+            <div class="error-message" id="nameError">Lütfen geçerli bir ad soyad giriniz.</div>
+            <div class="success-message" id="nameSuccess">✓ Geçerli ad soyad</div>
+        </div>
+        
+        <div class="form-group" id="emailGroup">
+            <label for="email">E-posta *</label>
+            <input type="email" id="email" name="email" required>
+            <div class="error-message" id="emailError">Lütfen geçerli bir e-posta adresi giriniz.</div>
+            <div class="success-message" id="emailSuccess">✓ Geçerli e-posta adresi</div>
+        </div>
+        
+        <div class="form-group" id="subjectGroup">
+            <label for="subject">Konu *</label>
+            <input type="text" id="subject" name="subject" required>
+            <div class="error-message" id="subjectError">Lütfen bir konu giriniz.</div>
+            <div class="success-message" id="subjectSuccess">✓ Konu girildi</div>
+        </div>
+        
+        <div class="form-group" id="messageGroup">
+            <label for="message">Mesajınız *</label>
+            <textarea id="message" name="message" required></textarea>
+            <div class="error-message" id="messageError">Lütfen en az 10 karakterlik bir mesaj giriniz.</div>
+            <div class="success-message" id="messageSuccess">✓ Mesaj girildi</div>
+        </div>
+        
+        <button type="submit" class="submit-btn" id="submitBtn">
+            <span class="btn-text">Gönder</span>
+            <span class="loading">
+                <i class="fas fa-spinner loading-spinner"></i>
+            </span>
+        </button>
+    </form>
+
+    <div class="contact-info">
+        <h3>İletişim Bilgileri</h3>
+        <div class="contact-persons">
+            <div class="contact-person">
+                <h4>Ahmet Yılmaz</h4>
+                <p><i>👤</i> Genel Müdür</p>
+                <p><i>📞</i> +90 (532) 123 45 67</p>
+                <p><i>✉️</i> ahmet@nien.com</p>
+                <p><i>📍</i> İstanbul Ofis</p>
+                <div class="social-links">
+                    <a href="https://wa.me/905321234567" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://instagram.com/ahmet_yilmaz" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://twitter.com/ahmet_yilmaz" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="https://linkedin.com/in/ahmet-yilmaz" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="contact-person">
+                <h4>Ayşe Demir</h4>
+                <p><i>👤</i> İletişim Sorumlusu</p>
+                <p><i>📞</i> +90 (533) 765 43 21</p>
+                <p><i>✉️</i> ayse@nien.com</p>
+                <p><i>📍</i> Ankara Ofis</p>
+                <div class="social-links">
+                    <a href="https://wa.me/905337654321" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://instagram.com/ayse_demir" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://twitter.com/ayse_demir" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="https://linkedin.com/in/ayse-demir" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const form = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const formSuccess = document.getElementById('formSuccess');
+    
+    // Validation functions
+    function validateName(name) {
+        return name.trim().length >= 2 && /^[a-zA-ZğüşıöçĞÜŞİÖÇ\s]+$/.test(name);
+    }
+    
+    function validateEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+    
+    function validateSubject(subject) {
+        return subject.trim().length >= 3;
+    }
+    
+    function validateMessage(message) {
+        return message.trim().length >= 10;
+    }
+    
+    // Field validation
+    function validateField(fieldId, validator, errorId, successId, groupId) {
+        const field = document.getElementById(fieldId);
+        const error = document.getElementById(errorId);
+        const success = document.getElementById(successId);
+        const group = document.getElementById(groupId);
+        
+        const value = field.value;
+        const isValid = validator(value);
+        
+        if (isValid) {
+            group.classList.remove('error');
+            group.classList.add('success');
+            error.classList.remove('show');
+            success.classList.add('show');
+        } else {
+            group.classList.remove('success');
+            group.classList.add('error');
+            success.classList.remove('show');
+            if (value.length > 0) {
+                error.classList.add('show');
+            }
+        }
+        
+        return isValid;
+    }
+    
+    // Real-time validation
+    document.getElementById('name').addEventListener('input', function() {
+        validateField('name', validateName, 'nameError', 'nameSuccess', 'nameGroup');
+    });
+    
+    document.getElementById('email').addEventListener('input', function() {
+        validateField('email', validateEmail, 'emailError', 'emailSuccess', 'emailGroup');
+    });
+    
+    document.getElementById('subject').addEventListener('input', function() {
+        validateField('subject', validateSubject, 'subjectError', 'subjectSuccess', 'subjectGroup');
+    });
+    
+    document.getElementById('message').addEventListener('input', function() {
+        validateField('message', validateMessage, 'messageError', 'messageSuccess', 'messageGroup');
+    });
+    
+    // Form submission
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Validate all fields
+        const isNameValid = validateField('name', validateName, 'nameError', 'nameSuccess', 'nameGroup');
+        const isEmailValid = validateField('email', validateEmail, 'emailError', 'emailSuccess', 'emailGroup');
+        const isSubjectValid = validateField('subject', validateSubject, 'subjectError', 'subjectSuccess', 'subjectGroup');
+        const isMessageValid = validateField('message', validateMessage, 'messageError', 'messageSuccess', 'messageGroup');
+        
+        if (isNameValid && isEmailValid && isSubjectValid && isMessageValid) {
+            // Show loading state
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+            
+            // Simulate form submission (replace with actual submission)
+            setTimeout(() => {
+                // Hide form and show success message
+                form.style.display = 'none';
+                formSuccess.classList.add('show');
+                
+                // Reset form
+                form.reset();
+                
+                // Reset validation states
+                ['nameGroup', 'emailGroup', 'subjectGroup', 'messageGroup'].forEach(groupId => {
+                    const group = document.getElementById(groupId);
+                    group.classList.remove('success', 'error');
+                });
+                
+                // Reset messages
+                ['nameError', 'emailError', 'subjectError', 'messageError', 
+                 'nameSuccess', 'emailSuccess', 'subjectSuccess', 'messageSuccess'].forEach(msgId => {
+                    document.getElementById(msgId).classList.remove('show');
+                });
+                
+                // Reset button
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+                
+                // Show form again after 5 seconds
+                setTimeout(() => {
+                    formSuccess.classList.remove('show');
+                    form.style.display = 'flex';
+                }, 5000);
+                
+            }, 2000);
+        } else {
+            // Scroll to first error
+            const firstError = document.querySelector('.form-group.error');
+            if (firstError) {
+                firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+    });
+    
+    // Auto-resize textarea
+    document.getElementById('message').addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = Math.min(this.scrollHeight, 300) + 'px';
+    });
+</script>
+{% endblock %} 

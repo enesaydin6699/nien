@@ -1,0 +1,265 @@
+{% extends 'homepage/base.html' %}
+
+{% block title %}İletişim Formları - NİEN{% endblock %}
+
+{% block header_title %}İletişim Formları{% endblock %}
+{% block header_subtitle %}Gelen iletişim formları listesi{% endblock %}
+
+{% block breadcrumb_items %}
+<span class="breadcrumb-item active">İletişim Formları</span>
+{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+<div class="contact-list-container">
+    <div class="contact-list-header">
+        <h2>İletişim Formları</h2>
+        <div class="contact-stats">
+            <span class="stat-item">
+                <i class="fas fa-users"></i>
+                Toplam: {{ contacts.count }}
+            </span>
+        </div>
+    </div>
+    
+    {% if contacts %}
+        <div class="contact-table-container">
+            <table class="contact-table">
+                <thead>
+                    <tr>
+                        <th>Ad Soyad</th>
+                        <th>E-posta</th>
+                        <th>Telefon</th>
+                        <th>Hizmet</th>
+                        <th>Tarih</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contact in contacts %}
+                    <tr data-contact-id="{{ contact.id }}">
+                        <td>{{ contact.full_name }}</td>
+                        <td>{{ contact.email }}</td>
+                        <td>{{ contact.phone }}</td>
+                        <td>
+                            <span class="service-badge service-{{ contact.service }}">
+                                {{ contact.get_service_display }}
+                            </span>
+                        </td>
+                        <td>{{ contact.created_at|date:"d.m.Y H:i" }}</td>
+                        <td>
+                            <button class="delete-btn" onclick="deleteContact({{ contact.id }}, '{{ contact.full_name }}')">
+                                <i class="fas fa-trash"></i>
+                                Sil
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="no-contacts">
+            <i class="fas fa-inbox"></i>
+            <p>Henüz iletişim formu gönderilmemiş.</p>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    .contact-list-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .contact-list-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #f0f0f0;
+    }
+    
+    .contact-list-header h2 {
+        margin: 0;
+        color: #333;
+        font-size: 28px;
+        font-weight: 700;
+    }
+    
+    .contact-stats {
+        display: flex;
+        gap: 20px;
+    }
+    
+    .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #666;
+        font-weight: 600;
+    }
+    
+    .stat-item i {
+        color: #00c3ff;
+    }
+    
+    .contact-table-container {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+    
+    .contact-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    .contact-table th,
+    .contact-table td {
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .contact-table th {
+        background: #f8f9fa;
+        font-weight: 600;
+        color: #333;
+        font-size: 14px;
+    }
+    
+    .contact-table tr:hover {
+        background: #f8f9fa;
+    }
+    
+    .service-badge {
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+    
+    .service-yazılım {
+        background: #e3f2fd;
+        color: #1976d2;
+    }
+    
+    .service-donanım {
+        background: #f3e5f5;
+        color: #7b1fa2;
+    }
+    
+    .service-danışmanlık {
+        background: #e8f5e8;
+        color: #388e3c;
+    }
+    
+    .no-contacts {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+    }
+    
+    .no-contacts i {
+        font-size: 48px;
+        color: #ddd;
+        margin-bottom: 20px;
+    }
+    
+    .no-contacts p {
+        font-size: 18px;
+        margin: 0;
+    }
+    
+    .delete-btn {
+        background: #dc3545;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    .delete-btn:hover {
+        background: #c82333;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+    }
+    
+    .delete-btn i {
+        font-size: 11px;
+    }
+    
+    @media (max-width: 768px) {
+        .contact-list-header {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+        }
+        
+        .contact-table-container {
+            overflow-x: auto;
+        }
+        
+        .contact-table {
+            min-width: 600px;
+        }
+        
+        .contact-table th,
+        .contact-table td {
+            padding: 10px;
+            font-size: 14px;
+        }
+    }
+</style>
+
+<script>
+    function deleteContact(contactId, contactName) {
+        if (confirm(`"${contactName}" adlı formu silmek istediğinizden emin misiniz?`)) {
+            // Get CSRF token
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            
+            fetch(`/contact-delete/${contactId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    // Remove the row from the table
+                    const row = document.querySelector(`tr[data-contact-id="${contactId}"]`);
+                    if (row) {
+                        row.remove();
+                    }
+                    // Update the count
+                    const statItem = document.querySelector('.stat-item');
+                    if (statItem) {
+                        const currentCount = parseInt(statItem.textContent.match(/\d+/)[0]);
+                        statItem.innerHTML = `<i class="fas fa-users"></i> Toplam: ${currentCount - 1}`;
+                    }
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+            });
+        }
+    }
+</script>
+{% endblock %} 

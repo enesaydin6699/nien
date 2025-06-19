@@ -1,0 +1,1344 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}NİEN{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}NİEN - Profesyonel hizmet ve yenilikçi çözümler. Kaliteli hizmet anlayışımızla müşterilerimize değer katıyoruz.{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}NİEN, profesyonel hizmet, yenilikçi çözümler, kalite, güven, danışmanlık{% endblock %}">
+    <meta name="author" content="NİEN">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:title" content="{% block og_title %}NİEN{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}NİEN - Profesyonel hizmet ve yenilikçi çözümler.{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{% static 'homepage/images/logo.png' %}{% endblock %}">
+    <meta property="og:site_name" content="NİEN">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ request.build_absolute_uri }}">
+    <meta property="twitter:title" content="{% block twitter_title %}NİEN{% endblock %}">
+    <meta property="twitter:description" content="{% block twitter_description %}NİEN - Profesyonel hizmet ve yenilikçi çözümler.{% endblock %}">
+    <meta property="twitter:image" content="{% block twitter_image %}{% static 'homepage/images/logo.png' %}{% endblock %}">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{% static 'homepage/images/logo.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'homepage/images/logo.png' %}">
+    
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Schema.org structured data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "NİEN",
+        "url": "{{ request.build_absolute_uri }}",
+        "logo": "{% static 'homepage/images/logo.png' %}",
+        "description": "{% block schema_description %}Profesyonel hizmet ve yenilikçi çözümler sunan kuruluş{% endblock %}",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "İstanbul",
+            "addressCountry": "TR"
+        },
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+90-532-123-45-67",
+            "contactType": "customer service",
+            "email": "info@nien.com"
+        },
+        "sameAs": [
+            "https://instagram.com/your-instagram",
+            "https://twitter.com/your-twitter",
+            "https://linkedin.com/company/your-company"
+        ]
+    }
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+
+        .header {
+            background: #222;
+            color: #fff;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .logo {
+            width: 60px;
+            height: 60px;
+            margin-right: 20px;
+            cursor: pointer;
+            border-radius: 10px;
+            object-fit: cover;
+            transition: transform 0.2s ease;
+        }
+        .logo:hover {
+            transform: scale(1.1);
+        }
+        .header-content {
+            flex-grow: 1;
+            text-align: center;
+        }
+        .menu-button {
+            width: 35px;
+            height: 30px;
+            margin-right: 20px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 5px;
+            background: transparent;
+            border: none;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+        }
+        .menu-button:focus {
+            outline: none;
+        }
+        .menu-button span {
+            display: block;
+            height: 2px;
+            width: 100%;
+            background-color: white;
+            border-radius: 4px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: left center;
+        }
+        .menu-button:hover {
+            transform: scale(1.1);
+        }
+        .menu-button:hover span {
+            background-color: #00c3ff;
+            height: 3px;
+        }
+        .menu-button.active span:first-child {
+            transform: rotate(45deg);
+            transform-origin: left center;
+        }
+        .menu-button.active span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .menu-button.active span:last-child {
+            transform: rotate(-45deg);
+            transform-origin: left center;
+        }
+
+        .nav-menu {
+            position: fixed;
+            top: 0;
+            left: -350px;
+            width: 350px;
+            height: 100vh;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            padding-top: 100px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 999;
+            box-shadow: 5px 0 20px rgba(0,0,0,0.3);
+            overflow-y: auto;
+        }
+
+        .nav-menu.active {
+            left: 0;
+            transform: translateX(0);
+        }
+
+        .nav-menu .nav-link {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            padding: 18px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .nav-menu .nav-link:hover {
+            color: #00c3ff;
+            transform: translateX(10px);
+            background: rgba(0, 195, 255, 0.1);
+        }
+
+        .nav-menu .nav-link i {
+            margin-right: 15px;
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            color: #ffffff;
+        }
+
+        .nav-menu .nav-link:hover i {
+            transform: scale(1.2);
+            color: #00c3ff;
+        }
+
+        /* Menü Başlığı */
+        .nav-header {
+            padding: 20px 30px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .nav-title {
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .nav-subtitle {
+            color: #888;
+            font-size: 14px;
+        }
+
+        /* Menü kategorileri */
+        .nav-category {
+            padding: 15px 30px 10px;
+            color: #00c3ff;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(0, 195, 255, 0.2);
+            margin-top: 20px;
+        }
+
+        /* Aktif menü öğesi - sadece hover efekti */
+        .nav-menu .nav-link.active {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+        .nav-menu .nav-link.active i {
+            color: #ffffff;
+        }
+
+        .nav-menu .nav-link.active:hover {
+            background: rgba(0, 195, 255, 0.1);
+            transform: translateX(10px);
+        }
+
+        .nav-menu .nav-link.active:hover i {
+            color: #00c3ff;
+        }
+
+        /* Menü alt kısmı */
+        .nav-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 30px;
+            background: rgba(0,0,0,0.3);
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-footer .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .nav-footer .social-links a {
+            color: #888;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-footer .social-links a:hover {
+            color: #00c3ff;
+            transform: translateY(-2px);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 998;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Breadcrumb Navigation */
+        .breadcrumb {
+            background: white;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9em;
+        }
+
+        .breadcrumb-item {
+            color: #666;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb-item:hover {
+            color: #00c3ff;
+        }
+
+        .breadcrumb-item.active {
+            color: #222;
+            font-weight: bold;
+        }
+
+        .breadcrumb-separator {
+            color: #ccc;
+        }
+
+        /* Search Functionality */
+        .search-container {
+            position: relative;
+            margin-left: auto;
+        }
+
+        .search-input {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 0.9em;
+            width: 200px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            width: 250px;
+        }
+
+        .login-button {
+            background: transparent;
+            color: white;
+            border: 2px solid #00c3ff;
+            padding: 8px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-left: 15px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .login-button:hover {
+            background: #00c3ff;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 195, 255, 0.3);
+        }
+
+        .login-button i {
+            font-size: 16px;
+        }
+
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1001;
+        }
+
+        .search-result-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .search-result-item:hover {
+            background: #f8f9fa;
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        main {
+            flex: 1;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .page-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .footer {
+            background: #222;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #00c3ff;
+        }
+
+        .footer-copyright {
+            color: #888;
+            font-size: 0.9em;
+        }
+
+        .social-media-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-media-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.5em;
+            transition: color 0.3s ease;
+        }
+
+        .social-media-links a:hover {
+            color: #00c3ff;
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: #00c3ff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+            box-shadow: 0 5px 15px rgba(0, 195, 255, 0.3);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 1000;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: #222;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 195, 255, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .search-input {
+                width: 150px;
+            }
+
+            .search-input:focus {
+                width: 180px;
+            }
+
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        /* Fixed Form Button */
+        .fixed-form-button {
+            position: fixed;
+            right: 0;
+            top: 66.67%;
+            transform: translateY(-50%);
+            background: #00c3ff;
+            color: white;
+            border: none;
+            padding: 15px 8px;
+            border-radius: 8px 0 0 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            box-shadow: -2px 0 10px rgba(0, 195, 255, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .fixed-form-button:hover {
+            background: #0099cc;
+            padding-right: 12px;
+            box-shadow: -4px 0 15px rgba(0, 195, 255, 0.5);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin: 0;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: #00c3ff;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #00c3ff;
+            box-shadow: 0 0 0 3px rgba(0, 195, 255, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #999;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #00c3ff;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #0099cc;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 195, 255, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .fixed-form-button {
+                padding: 12px 6px;
+                font-size: 12px;
+            }
+
+            .modal-content {
+                margin: 10% auto;
+                padding: 20px;
+                width: 95%;
+            }
+
+            .modal-title {
+                font-size: 20px;
+            }
+        }
+
+        /* User Menu Styles */
+        .user-menu-container {
+            position: relative;
+            margin-left: 15px;
+        }
+
+        .user-menu-button {
+            background: transparent;
+            color: white;
+            border: 2px solid #00c3ff;
+            padding: 8px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .user-menu-button:hover {
+            background: #00c3ff;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 195, 255, 0.3);
+        }
+
+        .user-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            min-width: 200px;
+            display: none;
+            z-index: 1000;
+            margin-top: 5px;
+        }
+
+        .user-menu.active {
+            display: block;
+            animation: menuSlideIn 0.3s ease;
+        }
+
+        @keyframes menuSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .user-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .user-menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .user-menu-item:hover {
+            background: #f8f9fa;
+            color: #00c3ff;
+        }
+
+        .user-menu-item i {
+            width: 16px;
+            text-align: center;
+        }
+
+        /* Responsive Tasarım */
+        @media (max-width: 768px) {
+            .nav-menu {
+                width: 100%;
+                left: -100%;
+            }
+            
+            .nav-menu.active {
+                left: 0;
+            }
+            
+            .nav-menu .nav-link {
+                padding: 20px 25px;
+                font-size: 18px;
+            }
+            
+            .nav-menu .nav-link i {
+                font-size: 20px;
+                margin-right: 20px;
+            }
+            
+            .nav-header {
+                padding: 25px 25px;
+            }
+            
+            .nav-title {
+                font-size: 24px;
+            }
+            
+            .nav-subtitle {
+                font-size: 16px;
+            }
+            
+            .nav-category {
+                padding: 20px 25px 15px;
+                font-size: 14px;
+            }
+            
+            .nav-footer {
+                padding: 25px;
+            }
+            
+            .nav-footer .social-links a {
+                font-size: 22px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-menu .nav-link {
+                padding: 18px 20px;
+                font-size: 16px;
+            }
+            
+            .nav-menu .nav-link i {
+                font-size: 18px;
+                margin-right: 15px;
+            }
+            
+            .nav-header {
+                padding: 20px 20px;
+            }
+            
+            .nav-title {
+                font-size: 20px;
+            }
+            
+            .nav-category {
+                padding: 15px 20px 10px;
+            }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header class="header">
+        <img src="{% static 'homepage/images/logo.png' %}" alt="NİEN Logo" class="logo" onclick="window.location.href='/'">
+        <button class="menu-button" onclick="toggleMenu(this)">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="header-content">
+            <h1>{% block header_title %}NİEN{% endblock %}</h1>
+            <p>{% block header_subtitle %}{% endblock %}</p>
+        </div>
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Ara..." id="searchInput">
+            <div class="search-results" id="searchResults"></div>
+        </div>
+        {% if user.is_authenticated %}
+            <div class="user-menu-container">
+                <button class="user-menu-button" onclick="toggleUserMenu()">
+                    <i class="fas fa-user"></i>
+                    {{ user.first_name|default:user.username }}
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="user-menu" id="userMenu">
+                    <a href="{% url 'contact_list' %}" class="user-menu-item">
+                        <i class="fas fa-list"></i>
+                        İletişim Formları
+                    </a>
+                    <a href="{% url 'change_password' %}" class="user-menu-item">
+                        <i class="fas fa-key"></i>
+                        Şifre Değiştir
+                    </a>
+                    <a href="{% url 'logout' %}" class="user-menu-item">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Çıkış Yap
+                    </a>
+                </div>
+            </div>
+        {% else %}
+            <a href="{% url 'login' %}" class="login-button">
+                <i class="fas fa-user"></i>
+                Giriş Yap
+            </a>
+        {% endif %}
+    </header>
+
+    <nav class="nav-menu">
+        <!-- Menü Başlığı -->
+        <div class="nav-header">
+            <div class="nav-title">NİEN</div>
+        </div>
+
+        <!-- Menü Linkleri -->
+        <a href="{% url 'home' %}" class="nav-link">
+            <i class="fas fa-home"></i>
+            Ana Sayfa
+        </a>
+        <a href="{% url 'hakkimizda' %}" class="nav-link">
+            <i class="fas fa-info-circle"></i>
+            Hakkımızda
+        </a>
+        <a href="{% url 'ekibimiz' %}" class="nav-link">
+            <i class="fas fa-users"></i>
+            Ekibimiz
+        </a>
+        <a href="{% url 'galeri' %}" class="nav-link">
+            <i class="fas fa-images"></i>
+            Galeri
+        </a>
+        <a href="{% url 'blog_list' %}" class="nav-link">
+            <i class="fas fa-newspaper"></i>
+            Blog
+        </a>
+        <a href="{% url 'iletisim' %}" class="nav-link">
+            <i class="fas fa-envelope"></i>
+            İletişim
+        </a>
+
+        <!-- Menü Alt Kısmı -->
+        <div class="nav-footer">
+            <div class="social-links">
+                <a href="https://wa.me/your-whatsapp-number" target="_blank" title="WhatsApp">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+                <a href="https://instagram.com/your-instagram" target="_blank" title="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://twitter.com/your-twitter" target="_blank" title="Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://linkedin.com/company/your-company" target="_blank" title="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="overlay" onclick="closeMenu()"></div>
+
+    <!-- Breadcrumb Navigation -->
+    {% block breadcrumb %}
+    <div class="breadcrumb">
+        <div class="breadcrumb-container">
+            <a href="{% url 'home' %}" class="breadcrumb-item">Anasayfa</a>
+            {% block breadcrumb_items %}{% endblock %}
+        </div>
+    </div>
+    {% endblock %}
+
+    <main>
+        <div class="page-content">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <img src="{% static 'homepage/images/logo.png' %}" alt="NİEN Logo" class="footer-logo">
+            <div class="footer-links">
+                <a href="{% url 'home' %}">Anasayfa</a>
+                <a href="{% url 'hakkimizda' %}">Hakkımızda</a>
+                <a href="{% url 'iletisim' %}">İletişim</a>
+            </div>
+            <div class="social-media-links">
+                <a href="https://wa.me/your-whatsapp-number" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://instagram.com/your-instagram" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://twitter.com/your-twitter" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="https://linkedin.com/company/your-company" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            </div>
+            <div class="footer-copyright">
+                © 2025 NİEN. Tüm hakları saklıdır.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" onclick="scrollToTop()" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Fixed Form Button -->
+    <button class="fixed-form-button" onclick="openModal()">
+        İLETİŞİM FORMU
+    </button>
+
+    <!-- Contact Form Modal -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">İletişim Formu</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <form id="contactForm" onsubmit="submitForm(event)">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="firstName">Ad *</label>
+                    <input type="text" id="firstName" name="firstName" placeholder="Adınız" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Soyad *</label>
+                    <input type="text" id="lastName" name="lastName" placeholder="Soyadınız" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Telefon Numarası *</label>
+                    <input type="tel" id="phone" name="phone" placeholder="05XX XXX XX XX" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">E-posta *</label>
+                    <input type="email" id="email" name="email" placeholder="ornek@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="service">İlgilenilen Hizmet *</label>
+                    <select id="service" name="service" required>
+                        <option value="">Hizmet seçiniz</option>
+                        <option value="yazılım">Yazılım</option>
+                        <option value="donanım">Donanım</option>
+                        <option value="danışmanlık">Danışmanlık</option>
+                    </select>
+                </div>
+                <button type="submit" class="submit-btn">Gönder</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Giriş Yap</h2>
+                <span class="close" onclick="closeLoginModal()">&times;</span>
+            </div>
+            <form id="loginForm" onsubmit="submitLoginForm(event)">
+                <div class="form-group">
+                    <label for="loginEmail">E-posta *</label>
+                    <input type="email" id="loginEmail" name="email" placeholder="ornek@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Şifre *</label>
+                    <input type="password" id="loginPassword" name="password" placeholder="Şifreniz" required>
+                </div>
+                <div class="form-group" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <label style="margin: 0; display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                        <input type="checkbox" name="remember" style="width: auto; margin: 0;">
+                        <span style="font-size: 14px;">Beni hatırla</span>
+                    </label>
+                    <a href="#" style="color: #00c3ff; text-decoration: none; font-size: 14px;">Şifremi unuttum</a>
+                </div>
+                <button type="submit" class="submit-btn">Giriş Yap</button>
+                <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee;">
+                    <p style="margin: 0; color: #666; font-size: 14px;">Hesabınız yok mu?</p>
+                    <a href="#" style="color: #00c3ff; text-decoration: none; font-weight: 600; font-size: 14px;">Kayıt Ol</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu(button) {
+            button.classList.toggle('active');
+            document.querySelector('.nav-menu').classList.toggle('active');
+            document.querySelector('.overlay').classList.toggle('active');
+        }
+
+        function closeMenu() {
+            document.querySelector('.menu-button').classList.remove('active');
+            document.querySelector('.nav-menu').classList.remove('active');
+            document.querySelector('.overlay').classList.remove('active');
+        }
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+
+        const searchData = [
+            { title: 'Anasayfa', url: '{% url "home" %}', keywords: 'ana sayfa, home, başlangıç, ev, ilk' },
+            { title: 'Galeri', url: '{% url "galeri" %}', keywords: 'galeri, fotoğraf, resim, görsel, picture, image, gallery' },
+            { title: 'İletişim', url: '{% url "iletisim" %}', keywords: 'iletişim, contact, adres, telefon, email, mesaj, form' },
+            { title: 'Hakkımızda', url: '{% url "hakkimizda" %}', keywords: 'hakkımızda, about, şirket, firma, biz, kimiz, tarihçe' },
+            { title: 'Ekibimiz', url: '{% url "ekibimiz" %}', keywords: 'ekip, team, çalışan, personel, kadro, yönetim, müdür' }
+        ];
+
+        searchInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase().trim();
+            
+            if (query.length < 1) {
+                searchResults.style.display = 'none';
+                return;
+            }
+
+            // Kelime bazlı arama
+            const queryWords = query.split(' ').filter(word => word.length > 0);
+            
+            const results = searchData.map(item => {
+                let score = 0;
+                const titleLower = item.title.toLowerCase();
+                const keywordsLower = item.keywords.toLowerCase();
+                
+                // Her kelime için puan hesapla
+                queryWords.forEach(word => {
+                    // Başlıkta tam eşleşme
+                    if (titleLower === word) {
+                        score += 200;
+                    }
+                    // Başlıkta başlangıç eşleşmesi (en yüksek öncelik)
+                    else if (titleLower.startsWith(word)) {
+                        score += 150;
+                    }
+                    // Başlıkta içeriyor
+                    else if (titleLower.includes(word)) {
+                        score += 50;
+                    }
+                    
+                    // Anahtar kelimelerde başlangıç eşleşmesi
+                    const keywordWords = keywordsLower.split(', ');
+                    keywordWords.forEach(keyword => {
+                        if (keyword.trim().startsWith(word)) {
+                            score += 100;
+                        }
+                    });
+                    
+                    // Anahtar kelimelerde tam eşleşme
+                    if (keywordsLower.includes(word)) {
+                        score += 30;
+                    }
+                    
+                    // Anahtar kelimelerde kısmi eşleşme
+                    keywordWords.forEach(keyword => {
+                        if (keyword.includes(word)) {
+                            score += 20;
+                        }
+                    });
+                });
+                
+                return { ...item, score };
+            }).filter(item => item.score > 0)
+              .sort((a, b) => b.score - a.score);
+
+            if (results.length > 0) {
+                searchResults.innerHTML = results.map(item => 
+                    `<div class="search-result-item" onclick="window.location.href='${item.url}'">
+                        ${item.title}
+                    </div>`
+                ).join('');
+                searchResults.style.display = 'block';
+            } else {
+                searchResults.innerHTML = '<div class="search-result-item">Sonuç bulunamadı</div>';
+                searchResults.style.display = 'block';
+            }
+        });
+
+        // Hide search results when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                searchResults.style.display = 'none';
+            }
+        });
+
+        // Back to top functionality
+        const backToTop = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Smooth scroll for all internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Modal Functions
+        function openModal() {
+            document.getElementById('contactModal').style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeModal() {
+            document.getElementById('contactModal').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+
+        // Login Modal Functions
+        function openLoginModal() {
+            document.getElementById('loginModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const contactModal = document.getElementById('contactModal');
+            const loginModal = document.getElementById('loginModal');
+            if (event.target === contactModal) {
+                closeModal();
+            }
+            if (event.target === loginModal) {
+                closeLoginModal();
+            }
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+                closeLoginModal();
+            }
+        });
+
+        // Form submission
+        function submitForm(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            
+            // Form validation
+            const firstName = formData.get('firstName');
+            const lastName = formData.get('lastName');
+            const phone = formData.get('phone');
+            const email = formData.get('email');
+            const service = formData.get('service');
+            
+            if (!firstName || !lastName || !phone || !email || !service) {
+                alert('Lütfen tüm alanları doldurunuz.');
+                return;
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Lütfen geçerli bir e-posta adresi giriniz.');
+                return;
+            }
+
+            // Phone validation (Turkish format)
+            const phoneRegex = /^05[0-9]{9}$/;
+            if (!phoneRegex.test(phone.replace(/\s/g, ''))) {
+                alert('Lütfen geçerli bir telefon numarası giriniz. (05XX XXX XX XX)');
+                return;
+            }
+
+            // Get CSRF token
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            // Send to backend
+            fetch('{% url "contact_submit" %}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': csrfToken
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Form başarıyla gönderildi! En kısa sürede size dönüş yapacağız.');
+                    event.target.reset();
+                    closeModal();
+                } else {
+                    alert(data.message || 'Bir hata oluştu. Lütfen tekrar deneyin.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+            });
+        }
+
+        // User menu functions
+        function toggleUserMenu() {
+            const userMenu = document.getElementById('userMenu');
+            userMenu.classList.toggle('active');
+        }
+
+        // Close user menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const userMenuContainer = document.querySelector('.user-menu-container');
+            const userMenu = document.getElementById('userMenu');
+            
+            if (userMenuContainer && !userMenuContainer.contains(e.target)) {
+                userMenu.classList.remove('active');
+            }
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html> 
