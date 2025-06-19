@@ -15,12 +15,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.conf import settings
 import os
 from homepage import views
+from django.conf.urls.static import static
 
 def sitemap(request):
     """Generate sitemap.xml"""
@@ -73,4 +74,5 @@ urlpatterns = [
     path('sitemap.xml', sitemap, name='sitemap'),
     path('robots.txt', robots_txt, name='robots'),
     path('admin/', admin.site.urls),
+    path('', include('homepage.urls')),
 ]
