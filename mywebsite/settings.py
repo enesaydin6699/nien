@@ -14,7 +14,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'f307*e+c_0gsbs&_6@7xc%e&7l*@f=a#9u&ld0^js=wn_2bze9')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '649b9965e66401a52d25ec8bc958bd97')
 DEBUG = os.environ.get('DJANGO_DEBUG', '') == 'True'
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',')
 
